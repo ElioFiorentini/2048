@@ -6,7 +6,7 @@
 /*   By: efiorent <efiorent@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 12:05:40 by efiorent          #+#    #+#             */
-/*   Updated: 2026/04/25 14:00:50 by efiorent         ###   ########lyon.fr   */
+/*   Updated: 2026/04/25 15:37:46 by lud-adam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int	main(void)
 	t_board	board;
 
 	init_board(&board, 4);
+	fill_start_numbers(&board);
 	if (!set_up_ncurses())
 		return (clean_up_ncurses(EXIT_FAILURE));
 	erase();
@@ -47,4 +48,5 @@ int	main(void)
 	refresh();
 	getch();
 	return (clean_up_ncurses(EXIT_SUCCESS));
+	return (0);
 }

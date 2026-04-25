@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   board.c                                            :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: efiorent <efiorent@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lud-adam <lud-adam <marvin@42.fr> >        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/25 12:11:26 by efiorent          #+#    #+#             */
-/*   Updated: 2026/04/25 15:17:33 by lud-adam         ###   ########.fr       */
+/*   Created: 2024/11/05 08:54:45 by lud-adam          #+#    #+#             */
+/*   Updated: 2024/11/18 11:03:58 by lud-adam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "board.h"
-
-#include <assert.h>
 #include <stddef.h>
 
-void	init_board(t_board *board, size_t size)
+size_t	ft_strlen(const char *str)
 {
-	assert((size >= 4 && size <= 5) && "Invalid board size");
-	board->size = size;
-	for (size_t i = 0; i < size; i++)
-		for (size_t j = 0; j < size; j++)
-			board->grid[i][j] = 0;
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
 }

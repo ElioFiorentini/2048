@@ -63,5 +63,5 @@ void	display_board(t_board *board)
 	int	y = LINES / 2 - (CELL_HEIGHT * board->size) / 2;
 	for (size_t j = 0; j < board->size; j++)
 		for (size_t i = 0; i < board->size; i++)
-			display_cell(board->board[i][j], x + i * CELL_WIDTH, y + j * CELL_HEIGHT);
+			display_cell(board->grid[i][j], x + i * CELL_WIDTH, y + j * CELL_HEIGHT);
 }

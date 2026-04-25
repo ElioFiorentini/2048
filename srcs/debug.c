@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   board.c                                            :+:      :+:    :+:   */
+/*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: efiorent <efiorent@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lud-adam <lud-adam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/25 12:11:26 by efiorent          #+#    #+#             */
-/*   Updated: 2026/04/25 15:17:33 by lud-adam         ###   ########.fr       */
+/*   Created: 2026/04/25 15:11:08 by lud-adam          #+#    #+#             */
+/*   Updated: 2026/04/25 15:15:57 by lud-adam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "board.h"
 
-#include <assert.h>
-#include <stddef.h>
+#include "libft.h"
 
-void	init_board(t_board *board, size_t size)
+bool	print_board(t_board *board)
 {
-	assert((size >= 4 && size <= 5) && "Invalid board size");
-	board->size = size;
-	for (size_t i = 0; i < size; i++)
-		for (size_t j = 0; j < size; j++)
-			board->grid[i][j] = 0;
+	size_t y = 0;
+	size_t x = 0;
+	while (y < board->size - 1)
+	{
+		while (x < board->size - 1)
+		{
+			ft_putnbr_fd(board->grid[y][x], 1);
+			x++;
+		}
+		y++;
+	}
+	return (true);
 }
