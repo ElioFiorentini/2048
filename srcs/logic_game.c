@@ -11,21 +11,64 @@
 /* ************************************************************************** */
 
 #include "board.h"
+#include "display.h"
+
+#include <stdlib.h>
+#include <ncurses.h>
 
 bool	move_left(t_board* board)
 {
-	size_t x = 1;
+	size_t x = 0;
+	mvprintw(1, 1, "here\n");
+	refresh();
 	size_t y = 0;
+	int old_x, old_y = 0;
 	while (y < board->size)
 	{
 		while (x < board->size)
 		{
-			if (board->grid[y][x] != 0 && board->grid[y][x - 1] == 0)
-				board->grid[y][x - 1] = board->grid[y][x];
+			if (board->grid[x][y] == 0)
+			{
+				old_x = x;
+				old_y = y;
+			}
+			else
+			{
+				board->grid[old_x][old_y] = board->grid[x][y];
+				board->grid[x][y] = 0;
+				old_x = x;
+				old_y = y;
+			}
 			x++;
 		}
+		old_x = 0;
+		old_y = 0;
 		y++;
-		x = 1;
+		x = 0;
 	}
 	return (true);
+}
+
+bool	game_loop(t_board* board)
+{
+	erase();
+	display_board(board);
+	while (1)
+	{
+		int k = getch();
+		if (k != ERR)
+		{
+			if (k == KEY_LEFT)
+				move_left(board);
+			// if (fill_nb_rd_place(board) == false)
+			// 	return (clean_up_ncurses(EXIT_SUCCESS));
+            while (getch() != ERR)
+                ;
+        }
+		erase();
+		display_board(board);
+		refresh();
+	}
+	refresh();
+	erase();
 }

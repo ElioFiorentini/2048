@@ -12,8 +12,10 @@
 
 #include "board.h"
 #include "display.h"
+
 #include <ncurses.h>
 #include <stddef.h>
+
 #define INIT_COLORS(color) init_pair(color, COLOR_WHITE, color);
 
 void	init_all_color_pair()

@@ -24,9 +24,12 @@ typedef struct s_board
 }			t_board;
 
 void	init_board(t_board *board, size_t size);
+ 
+int		clean_up_ncurses(int status);
+bool	set_up_ncurses(void);
 bool	fill_start_numbers(t_board* board);
 bool	fill_nb_rd_place(t_board* board);
-bool	move_left(t_board* board);
+bool	game_loop(t_board* board);
 
 // DEBUG
 bool	print_board(t_board *board);
