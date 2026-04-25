@@ -7,7 +7,8 @@ CFLAGS		:= -Wall -Wextra -Werror -g3
 CPPFLAGS	:= -MMD -MP -I $(INCLUDE_DIR)
 SRCS		:= 		\
 	main.c			\
-	board.c
+	board.c			\
+	display.c
 SRCS		:= $(SRCS:%=$(SRC_DIR)/%)
 OBJS		:= $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 DEPS		:= $(OBJS:.o=.d)
