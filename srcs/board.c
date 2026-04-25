@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   board.h                                            :+:      :+:    :+:   */
+/*   board.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: efiorent <efiorent@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/25 11:54:05 by efiorent          #+#    #+#             */
-/*   Updated: 2026/04/25 12:22:48 by efiorent         ###   ########lyon.fr   */
+/*   Created: 2026/04/25 12:11:26 by efiorent          #+#    #+#             */
+/*   Updated: 2026/04/25 12:31:46 by efiorent         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BOARD_H
-# define BOARD_H
-# include <stddef.h>
+#include "board.h"
+#include <assert.h>
+#include <stddef.h>
 
-typedef struct s_board
+void	init_board(t_board *board, size_t size)
 {
-	int		board[5][5];
-	size_t	size;
-}			t_board;
-
-void	init_board(t_board *board, int size);
-
-#endif
+	assert((size >= 4 && size <= 5) && "Invalid board size");
+	board->size = size;
+	for (size_t i = 0; i < size; i++)
+		for (size_t j = 0; j < size; j++)
+			board->board[i][j] = 0;
+}
