@@ -59,8 +59,8 @@ void	display_board(t_board *board)
 {
 	const size_t CELL_WIDTH = BOARD_CELL_SIZE * 2 - BOARD_CELL_WALL_SIZE * 2;
 	const size_t CELL_HEIGHT = BOARD_CELL_SIZE - BOARD_CELL_WALL_SIZE;
-	int	x = COLS / 2 - CELL_WIDTH * (board->size / 2);
-	int	y = LINES / 2 - CELL_HEIGHT * (board->size / 2);
+	int	x = COLS / 2 - (CELL_WIDTH * board->size) / 2;
+	int	y = LINES / 2 - (CELL_HEIGHT * board->size) / 2;
 	for (size_t j = 0; j < board->size; j++)
 		for (size_t i = 0; i < board->size; i++)
 			display_cell(board->board[i][j], x + i * CELL_WIDTH, y + j * CELL_HEIGHT);
