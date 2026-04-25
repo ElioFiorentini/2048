@@ -13,13 +13,13 @@
 #include "board.h"
 #include "display.h"
 
+#include <stdbool.h>
 #include <stdlib.h>
 #include <ncurses.h>
 
 bool	move_left(t_board* board)
 {
 	size_t x = 0;
-	mvprintw(1, 1, "here\n");
 	refresh();
 	size_t y = 0;
 	int old_x, old_y = 0;
@@ -51,19 +51,24 @@ bool	move_left(t_board* board)
 
 bool	game_loop(t_board* board)
 {
+	bool	running = true;
 	erase();
 	display_board(board);
-	while (1)
+	while (running)
 	{
 		int k = getch();
-		if (k != ERR)
+		while (k != ERR)
 		{
 			if (k == KEY_LEFT)
 				move_left(board);
+			if (k == 'q' || k == KEY_ESCAPE)
+			{
+				running = false;
+				break;
+			}
 			// if (fill_nb_rd_place(board) == false)
 			// 	return (clean_up_ncurses(EXIT_SUCCESS));
-            while (getch() != ERR)
-                ;
+			k = getch();
         }
 		erase();
 		display_board(board);
@@ -71,4 +76,5 @@ bool	game_loop(t_board* board)
 	}
 	refresh();
 	erase();
+	return (false);
 }

@@ -12,15 +12,16 @@
 
 #include "board.h"
 #include "display.h"
-
+#include "font.h"
 #include <ncurses.h>
 #include <stdlib.h>
 
 bool	set_up_ncurses(void)
 {
 	initscr();
+	set_escdelay(25);
 	curs_set(0);
-	nodelay(stdscr, TRUE);
+	noecho();
 	keypad(stdscr, TRUE);
 	if (has_colors() == FALSE)
 		return (false);
@@ -34,7 +35,8 @@ bool	set_up_ncurses(void)
 int	clean_up_ncurses(int status)
 {
 	curs_set(1);
-	nodelay(stdscr, FALSE);
+	echo();
+	keypad(stdscr, FALSE);
 	endwin();
 	return (status);
 }
@@ -42,12 +44,18 @@ int	clean_up_ncurses(int status)
 int	main(void)
 {
 	t_board	board;
+	t_font	font;
 
 	init_board(&board, 4);
-	// fill_start_numbers(&board);
-	board.grid[1][0] = 2;
+	load_font(&font);
+	fill_start_numbers(&board);
+	board.grid[1][1] = 2048;
+	board.grid[1][2] = 32;
+	board.grid[1][3] = 128;
 	if (!set_up_ncurses())
 		return (clean_up_ncurses(EXIT_FAILURE));
+	if (display_main_menu(&font) == ERR)
+		return (clean_up_ncurses(EXIT_SUCCESS));
 	game_loop(&board);
 	return (clean_up_ncurses(EXIT_SUCCESS));
 }

@@ -5,8 +5,7 @@ INCLUDE_DIR		:= includes
 CC				:= cc
 CFLAGS			:= -Wall -Wextra -Werror -g3
 CPPFLAGS		:= -MMD -MP -I $(INCLUDE_DIR) 
-CFLAGS_DEBUG	:= -Wall -Wextra -MMD -I $(INCLUDE_DIR) -g3 -D DEBUG=1
-P_LIBFT			:=	libft
+P_LIBFT			:= libft
 LIBFT			:= $(P_LIBFT)/libft.a
 
 SRCS			:= 		\
@@ -15,7 +14,8 @@ SRCS			:= 		\
 	board.c				\
 	logic_game.c		\
 	fill_grid_numbers.c \
-	display.c
+	display.c			\
+	font.c
 SRCS			:= $(SRCS:%=$(SRC_DIR)/%)
 OBJS			:= $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 DEPS			:= $(OBJS:.o=.d)
@@ -32,7 +32,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 
 force:
 
-$(LIBFT) : force
+$(LIBFT): force
 	@$(MAKE) -C $(P_LIBFT)
 
 clean:
@@ -53,4 +53,4 @@ debug:
 
 -include $(DEPS)
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re run debug

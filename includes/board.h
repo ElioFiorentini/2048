@@ -13,6 +13,7 @@
 #ifndef BOARD_H
 # define BOARD_H
 
+#define KEY_ESCAPE 27
 # include <stddef.h>
 # include <stdbool.h>
 

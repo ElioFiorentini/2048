@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   display.h                                          :+:      :+:    :+:   */
+/*   font.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: efiorent <efiorent@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/25 13:10:12 by efiorent          #+#    #+#             */
-/*   Updated: 2026/04/25 14:04:33 by efiorent         ###   ########lyon.fr   */
+/*   Created: 2026/04/25 14:58:04 by efiorent          #+#    #+#             */
+/*   Updated: 2026/04/25 15:44:27 by efiorent         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DISPLAY_H
-# define DISPLAY_H
-# include "board.h"
-# include "font.h"
-# include <ncurses.h>
-# define CELL_SIZE_L 13
-# define CELL_SIZE_S 5
-# define CELL_WALL_SIZE 1
-# define BOARD_WALL_COLOR COLOR_BLUE
-# define BOARD_NUMBER_COLOR COLOR_YELLOW
+#ifndef FONT_H
+# define FONT_H
+# define FONT_WIDTH 8
+# define FONT_HEIGHT 14
 
-void	init_all_color_pair();
-void	display_board(t_board *board);
-int		display_main_menu(t_font *font);
+typedef struct s_font
+{
+	char	chars[127][FONT_HEIGHT][FONT_WIDTH + 1];
+}			t_font;
+
+void	load_font(t_font *font);
+void	print_char(t_font *font, int x, int y, int c);
+void	print(t_font *font, int x, int y, char *str);
+void	print_number(int x, int y, int nb, int size);
 
 #endif

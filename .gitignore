@@ -1,6 +1,7 @@
 compile_commands.json
 .build
 2048
+sos
 
 # This gitignore template can be found at https://github.com/github/gitignore/blob/main/C.gitignore
 # Prerequisites
