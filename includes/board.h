@@ -6,7 +6,7 @@
 /*   By: efiorent <efiorent@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 11:54:05 by efiorent          #+#    #+#             */
-/*   Updated: 2026/04/25 15:25:27 by lud-adam         ###   ########.fr       */
+/*   Updated: 2026/04/25 17:23:44 by lud-adam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,13 @@ typedef struct s_board
 {
 	int		grid[5][5];
 	size_t	size;
+	size_t	empty_case;
 }			t_board;
 
 void	init_board(t_board *board, size_t size);
 bool	fill_start_numbers(t_board* board);
+bool	fill_nb_rd_place(t_board* board);
+bool	move_left(t_board* board);
 
 // DEBUG
 bool	print_board(t_board *board);

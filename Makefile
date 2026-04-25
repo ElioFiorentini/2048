@@ -14,6 +14,7 @@ SRCS			:= 		\
 	debug.c				\
 	board.c				\
 	logic_game.c		\
+	fill_grid_numbers.c \
 	display.c
 SRCS			:= $(SRCS:%=$(SRC_DIR)/%)
 OBJS			:= $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
