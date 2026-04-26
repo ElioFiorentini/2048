@@ -23,5 +23,7 @@
 void	init_all_color_pair();
 void	display_board(t_board *board);
 int		display_main_menu(t_font *font);
+int		display_end_menu(t_font *font);
+int		display_game_over(t_font *font);
 
 #endif

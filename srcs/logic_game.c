@@ -216,13 +216,11 @@ static bool add_column(t_board *board, int c, bool move_bottom)
 	return (res);
 }
 
-bool	game_loop(t_board *board)
+int	game_loop(t_board *board, t_font *font)
 {
 	int		c;
-	bool	running;
 
-	running = true;
-	while (running)
+	while (true)
 	{
 		erase();
 		display_board(board);
@@ -251,17 +249,9 @@ bool	game_loop(t_board *board)
 				fill_nb_rd_place(board);
 		}
 		else if (c == 'q' || c == KEY_ESCAPE)
-			running = false;
-		if (is_game_over(board) == true)
-		{
-			erase();
-			display_board(board);
-			mvprintw(LINES / 2, COLS / 2, "Game Over !");
-			refresh();
-			while (c != '\n' && c != EOF && c != 'q' && c != KEY_ESCAPE)
-				c = getch();
-			return (false);
-		}
+			return (ERR);
+		if (is_game_over(board) == true || c == 'e')
+			return (display_game_over(font));
 	}
-	return (false);
+	return (ERR);
 }

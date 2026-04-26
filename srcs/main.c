@@ -45,18 +45,21 @@ int	clean_up_ncurses(int status)
 
 int	main(void)
 {
-
 	t_font	font;
 	t_board	board;
 
 	load_font(&font);
 	if (!set_up_ncurses())
 		return (clean_up_ncurses(EXIT_FAILURE));
-	int selected_choice = display_main_menu(&font);
-	if (selected_choice == ERR)
-		return (clean_up_ncurses(EXIT_SUCCESS));
-	init_board(&board, selected_choice);
-	fill_start_numbers(&board);
-	game_loop(&board);
+	while (true)
+	{
+		int selected_choice = display_main_menu(&font);
+		if (selected_choice != 4 && selected_choice != 5)
+			return (clean_up_ncurses(EXIT_SUCCESS));
+		init_board(&board, selected_choice);
+		fill_start_numbers(&board);
+		if (game_loop(&board, &font) != OK)
+			return (clean_up_ncurses(EXIT_SUCCESS));
+	}
 	return (clean_up_ncurses(EXIT_SUCCESS));
 }

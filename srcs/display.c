@@ -18,7 +18,7 @@
 #include <stddef.h>
 
 #define INIT_COLORS(color) init_pair(color, COLOR_WHITE, color);
-#define INVERSE_COLORS(print) \
+#define INVERT_COLORS(print) \
 	do {\
 		attron(A_REVERSE);\
 		(print);\
@@ -88,8 +88,8 @@ static size_t	max(size_t size1, size_t size2)
 
 void	display_board(t_board *board)
 {
-	const size_t	H_PADDING = 0;//COLS * 0.3;
-	const size_t	V_PADDING = 0;//LINES * 0.10;
+	const size_t	H_PADDING = COLS * 0.3;
+	const size_t	V_PADDING = LINES * 0.10;
 	const size_t	CELL_WIDTH = max((COLS - H_PADDING) / board->size + 1, MIN_CELL_WIDTH);
 	const size_t	CELL_HEIGHT = max((LINES - V_PADDING) / board->size + 1, MIN_CELL_HEIGHT);
 	int	y = V_PADDING / 2;
@@ -106,39 +106,117 @@ void	display_board(t_board *board)
 	}
 }
 
+static void	display_menu_choice(bool invert, int x, int y, char *s)
+{
+	if (invert)
+		INVERT_COLORS(mvprintw(y, x, "%s", s));
+	else
+		mvprintw(y, x, "%s", s);
+}
+
 int	display_main_menu(t_font *font)
 {
 	char *logo_str = "2048";
 	int xlogo = COLS / 2 - ft_strlen(logo_str) * FONT_WIDTH;
 	int ylogo = LINES / 4;
 
-	char *s1 = "4x4 board";
+	char *s1 = " 4x4 board ";
 	int x1 = COLS / 2 - ft_strlen(s1) / 2;
 	int y1 = LINES - LINES / 3;
 
-	char *s2 = "5x5 board";
+	char *s2 = " 5x5 board ";
 	int x2 = COLS / 2 - ft_strlen(s2) / 2;
 	int y2 = y1 + 2;
+
+	char *s3 = " exit ";
+	int x3 = COLS / 2 - ft_strlen(s3) / 2;
+	int y3 = y2 + 2;
 
 	int selected_choice = 4;
 	while (true)
 	{
 		erase();
 		COLOR(COLOR_YELLOW, print(font, xlogo, ylogo, logo_str));
-		if (selected_choice == 4)
-			INVERSE_COLORS(mvprintw(y1, x1, "%s", s1));
-		else
-			mvprintw(y1, x1, "%s", s1);
-		if (selected_choice == 5)
-			INVERSE_COLORS(mvprintw(y2, x2, "%s", s2));
-		else
-			mvprintw(y2, x2, "%s", s2);
+		display_menu_choice(selected_choice == 4, x1, y1, s1);
+		display_menu_choice(selected_choice == 5, x2, y2, s2);
+		display_menu_choice(selected_choice == 6, x3, y3, s3);
 		refresh();
+
+		int k = getch();
+		if (k == 'q' || k == KEY_ESCAPE)
+			return (ERR);
+		if (k == KEY_UP)
+			selected_choice = (selected_choice + 1) % 3 + 4;
+		if (k == KEY_DOWN)
+			selected_choice = (selected_choice + 3) % 3 + 4;
+		if (k == '\n' || k == ' ')
+			return (selected_choice);
+	}
+	return (ERR);
+}
+
+int	display_end_menu(t_font *font)
+{
+	char *logo_str = "Victory !!!";
+	int xlogo = COLS / 2 - ft_strlen(logo_str) * FONT_WIDTH;
+	int ylogo = LINES / 4;
+
+	char *s1 = " Continue to play ";
+	int x1 = COLS / 2 - ft_strlen(s1) / 2;
+	int y1 = LINES - LINES / 3;
+
+	char *s2 = " Quit ";
+	int x2 = COLS / 2 - ft_strlen(s2) / 2;
+	int y2 = y1 + 2;
+
+	int selected_choice = 0;
+	while (true)
+	{
+		erase();
+		COLOR(COLOR_YELLOW, print(font, xlogo, ylogo, logo_str));
+		display_menu_choice(selected_choice == 0, x1, y1, s1);
+		display_menu_choice(selected_choice == 1, x2, y2, s2);
+		refresh();
+
 		int k = getch();
 		if (k == 'q' || k == KEY_ESCAPE)
 			return (ERR);
 		if (k == KEY_UP || k == KEY_DOWN)
-			selected_choice = (selected_choice + 1) % 2 + 4;
+			selected_choice = (selected_choice + 1) % 2;
+		if (k == '\n' || k == ' ')
+			return (selected_choice);
+	}
+	return (ERR);
+}
+
+int	display_game_over(t_font *font)
+{
+	char *logo_str = "Game Over...";
+	int xlogo = COLS / 2 - ft_strlen(logo_str) * FONT_WIDTH;
+	int ylogo = LINES / 4;
+
+	char *s1 = " Play again ";
+	int x1 = COLS / 2 - ft_strlen(s1) / 2;
+	int y1 = LINES - LINES / 3;
+
+	char *s2 = " Quit ";
+	int x2 = COLS / 2 - ft_strlen(s2) / 2;
+	int y2 = y1 + 2;
+
+	int selected_choice = OK;
+	while (true)
+	{
+		erase();
+		COLOR(COLOR_YELLOW, print(font, xlogo, ylogo, logo_str));
+		display_menu_choice(selected_choice == OK, x1, y1, s1);
+		display_menu_choice(selected_choice == ERR, x2, y2, s2);
+		refresh();
+
+		int k = getch();
+		if (k == 'q' || k == KEY_ESCAPE)
+			return (ERR);
+		if (k == KEY_UP || k == KEY_DOWN)
+			selected_choice = (selected_choice + 2) % 2 - 1;
 		if (k == '\n' || k == ' ')
 			return (selected_choice);
 	}

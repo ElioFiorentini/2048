@@ -13,6 +13,8 @@
 #ifndef BOARD_H
 # define BOARD_H
 
+# include "font.h"
+
 #define KEY_ESCAPE 27
 # include <stddef.h>
 # include <stdbool.h>
@@ -35,7 +37,7 @@ int		clean_up_ncurses(int status);
 bool	set_up_ncurses(void);
 bool	fill_start_numbers(t_board* board);
 bool	fill_nb_rd_place(t_board* board);
-bool	game_loop(t_board* board);
+int		game_loop(t_board *board, t_font *font);
 
 //GAME LOGIC UTILS
 
