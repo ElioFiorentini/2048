@@ -145,10 +145,7 @@ void	print_number(int x, int y, int nb, int size)
 			"###",
 		},
 	};
-	int len = 0;
-	for (int tmp_nb = nb; tmp_nb != 0; tmp_nb /= 10)
-		len++;
-	len--;
+	int len = nbrlen(nb) - 1;
 	int offset = (3 * size * len + len) / 2 - size;
 	print_digits(digits, x + offset, y - 2, nb, size);
 }
@@ -164,4 +161,14 @@ void	print(t_font *font, int x, int y, char *str)
 		print_char(font, x + offset, y, str[i]);
 		offset += STEP;
 	}
+}
+
+long long	nbrlen(long long nb)
+{
+	if (nb == 0)
+		return 1;
+	int len = 0;
+	for (int tmp_nb = nb; tmp_nb != 0; tmp_nb /= 10)
+		len++;
+	return (len);
 }

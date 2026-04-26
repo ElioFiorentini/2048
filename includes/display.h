@@ -15,9 +15,8 @@
 # include "board.h"
 # include "font.h"
 # include <ncurses.h>
-# define CELL_SIZE_L 13
-# define CELL_SIZE_S 5
-# define CELL_WALL_SIZE 1
+# define MIN_CELL_WIDTH 8
+# define MIN_CELL_HEIGHT 3
 # define BOARD_WALL_COLOR COLOR_BLUE
 # define BOARD_NUMBER_COLOR COLOR_YELLOW
 

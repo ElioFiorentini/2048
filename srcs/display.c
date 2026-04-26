@@ -43,64 +43,67 @@ void	init_all_color_pair()
 	INIT_COLORS(COLOR_WHITE);
 }
 
-static void	display_cell_border(int x, int y)
+static void	display_cell_border(int x, int y, const size_t CELL_WIDTH, const size_t CELL_HEIGHT)
 {
-	const size_t CELL_SIZE = (COLS > 100) ? CELL_SIZE_L: CELL_SIZE_S;
-	const size_t CELL_WIDTH = CELL_SIZE * 2;
-	const size_t CELL_WALL_WIDTH = CELL_WALL_SIZE * 2;
-
 	attron(COLOR_PAIR(BOARD_WALL_COLOR));
-	// top border
 	for (size_t i = 0; i < CELL_WIDTH; i++)
-		for (size_t j = 0; j < CELL_WALL_SIZE; j++)
-			mvaddch(y + j, x + i, ' ');
-	// bottom border
-	for (size_t i = 0; i < CELL_WIDTH; i++)
-		for (size_t j = 0; j < CELL_WALL_SIZE; j++)
-			mvaddch(y + CELL_SIZE - j - 1, x + i, ' ');
-	// left border
-	for (size_t i = 0; i < CELL_SIZE; i++)
-		for (size_t j = 0; j < CELL_WALL_WIDTH; j++)
+	{
+		mvaddch(y, x + i, ' ');
+		mvaddch(y + CELL_HEIGHT - 1, x + i, ' ');
+	}
+	for (size_t i = 0; i < CELL_HEIGHT; i++)
+	{
+		for (size_t j = 0; j < 2; j++)
+		{
 			mvaddch(y + i, x + j, ' ');
-	// right border
-	for (size_t i = 0; i < CELL_SIZE; i++)
-		for (size_t j = 0; j < CELL_WALL_WIDTH; j++)
-			mvaddch(y + i, x + CELL_WIDTH - j - 1, ' ');
+			mvaddch(y + i, x + j + CELL_WIDTH - 2, ' ');
+		}
+	}
 	attroff(COLOR_PAIR(BOARD_WALL_COLOR));
 }
 
-static void	display_cell_number(int nb, int x, int y, int size)
+static void	display_cell_number(int nb, int x, int y, const size_t CELL_WIDTH, const size_t CELL_HEIGHT)
 {
 	if (nb <= 0)
 		return ;
-	const size_t CELL_SIZE = (COLS > 100) ? CELL_SIZE_L: CELL_SIZE_S;
-	int len = 0;
-	for (int tmp_nb = nb; tmp_nb != 0; tmp_nb /= 10)
-		len++;
-	int x_pos = x + CELL_SIZE - 1;
-	int y_pos = y + CELL_SIZE / 2;
-	if (COLS < 100)
-		mvprintw(y_pos, x + CELL_SIZE - (len + 1) / 2, "%d", nb);
+	size_t len = nbrlen(nb);
+	size_t text_width = 3 * len + (len - 1);
+	size_t text_size = (text_width + 3 * len > CELL_WIDTH - 4)? 1: 2;
+	if (text_size == 2)
+		text_width += 3 * len;
+	int x_pos = x + CELL_WIDTH / 2;
+	int y_pos = y + CELL_HEIGHT / 2;
+	if (text_width > CELL_WIDTH - 4 || CELL_HEIGHT - 2 < 5)
+		mvprintw(y_pos, x_pos - len / 2, "%d", nb);
 	else
-		COLOR(COLOR_YELLOW, print_number(x_pos, y_pos, nb, size));
+		COLOR(COLOR_YELLOW, print_number(x_pos, y_pos, nb, text_size));
+}
+
+static size_t	max(size_t size1, size_t size2)
+{
+	if (size1 > size2)
+		return (size1);
+	return (size2);
 }
 
 void	display_board(t_board *board)
 {
-	const size_t	CELL_SIZE = (COLS > 100) ? CELL_SIZE_L: CELL_SIZE_S;
-	const size_t	CELL_WIDTH = CELL_SIZE * 2 - CELL_WALL_SIZE * 2;
-	const size_t	CELL_HEIGHT = CELL_SIZE - CELL_WALL_SIZE;
-	int	x = COLS / 2 - (CELL_WIDTH * board->size) / 2;
-	int	y = LINES / 2 - (CELL_HEIGHT * board->size) / 2;
+	const size_t	H_PADDING = 0;//COLS * 0.3;
+	const size_t	V_PADDING = 0;//LINES * 0.10;
+	const size_t	CELL_WIDTH = max((COLS - H_PADDING) / board->size + 1, MIN_CELL_WIDTH);
+	const size_t	CELL_HEIGHT = max((LINES - V_PADDING) / board->size + 1, MIN_CELL_HEIGHT);
+	int	y = V_PADDING / 2;
 	for (size_t i = 0; i < board->size; i++)
-		for (size_t j = 0; j < board->size; j++)
-			display_cell_border(x + i * CELL_WIDTH, y + j * CELL_HEIGHT);
-	for (size_t i = 0; i < board->size; i++)
+	{
+		int	x = H_PADDING / 2;
 		for (size_t j = 0; j < board->size; j++)
 		{
-			int size = (board->grid[i][j] >= 1000)? 1: 2;
-			display_cell_number(board->grid[i][j], x + j * CELL_WIDTH, y + i * CELL_HEIGHT, size);
+			display_cell_border(x, y, CELL_WIDTH, CELL_HEIGHT);
+			display_cell_number(board->grid[i][j], x, y, CELL_WIDTH, CELL_HEIGHT);
+			x += CELL_WIDTH - 2;
 		}
+		y += CELL_HEIGHT - 1;
+	}
 }
 
 int	display_main_menu(t_font *font)

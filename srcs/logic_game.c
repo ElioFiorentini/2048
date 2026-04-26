@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "board.h"
+#include "display.h"
 #include "libft.h"
 
 #include <stdbool.h>
@@ -161,8 +162,8 @@ static bool add_column(t_board *board, int c)
 		{
 			board->empty_case++;
 			board->grid[i - 1][c] *= 2;
-			if (board->grid[i - 1][c] == 2048)
-				printf("Victory !\n");
+			// if (board->grid[i - 1][c] == 2048)
+				// printf("Victory !\n");
 			board->grid[i][c] = 0;
 			res = true;
 		}
@@ -179,42 +180,44 @@ bool	game_loop(t_board *board)
 	running = true;
 	while (running)
 	{
-		print_simple_grid(board);
-		printf("Commande (a=left, d=right, w=up, s=down, q=quit) : ");
-		c = getchar();
+		erase();
+		display_board(board);
+		refresh();
+		c = getch();
 
-		if (c == 'a')
+		if (c == 'a' || c == KEY_LEFT)
 		{
 			if (move_side(board, false) == true)
 				fill_nb_rd_place(board);
 		}
-		else if (c == 'd')
+		else if (c == 'd' || c == KEY_RIGHT)
 		{
 			if (move_side(board, true) == true)
 				fill_nb_rd_place(board);
 
 		}
-		else if (c == 'w')
+		else if (c == 'w' || c == KEY_UP)
 		{
 			if (move_verticality(board, false) == true)
 				fill_nb_rd_place(board);
 		}
-		else if (c == 's')
+		else if (c == 's' || c == KEY_DOWN)
 		{
 			if (move_verticality(board, true) == true)
 				fill_nb_rd_place(board);
 		}
-		else if (c == 'q')
+		else if (c == 'q' || c == KEY_ESCAPE)
 			running = false;
 		if (is_game_over(board) == true)
 		{
-			print_simple_grid(board);
-			printf("Game over\n");
+			erase();
+			display_board(board);
+			mvprintw(LINES / 2, COLS / 2, "Game Over !");
+			refresh();
+			while (c != '\n' && c != EOF && c != 'q' && c != KEY_ESCAPE)
+				c = getch();
 			return (false);
 		}
-		while (c != '\n' && c != EOF)
-			c = getchar();
-		printf("\n");
 	}
 	return (false);
 }
