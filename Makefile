@@ -9,7 +9,7 @@ CPPFLAGS		:= -MMD -MP -I $(INCLUDE_DIR)
 SRCS			:= 		\
 	main.c				\
 	board.c				\
-	logic_game.c		\
+	game_logic.c		\
 	fill_grid_numbers.c \
 	display.c			\
 	check_game_over.c	\

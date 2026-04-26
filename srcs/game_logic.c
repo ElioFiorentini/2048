@@ -245,7 +245,7 @@ int	game_loop(t_board *board, t_font *font)
 		if (is_victory(board) == true)
 			if (display_end_menu(font) != 0)
 				return (ERR);
-		if (is_game_over(board) == true || c == 'e')
+		if (is_game_over(board) == true)
 			return (display_game_over(font));
 	}
 	return (ERR);
