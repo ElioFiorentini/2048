@@ -47,15 +47,14 @@ int	main(void)
 	t_font	font;
 
 	init_board(&board, 4);
-	load_font(&font);
-	// fill_start_numbers(&board);
-	board.grid[1][0] = 2;
+	// load_font(&font);
+	fill_start_numbers(&board);
 	// board.grid[1][2] = 32;
 	// board.grid[1][3] = 128;
-	if (!set_up_ncurses())
-		return (clean_up_ncurses(EXIT_FAILURE));
-	if (display_main_menu(&font) == ERR)
-		return (clean_up_ncurses(EXIT_SUCCESS));
+	// if (!set_up_ncurses())
+	// 	return (clean_up_ncurses(EXIT_FAILURE));
+	// if (display_main_menu(&font) == ERR)
+	// 	return (clean_up_ncurses(EXIT_SUCCESS));
 	game_loop(&board);
 	return (clean_up_ncurses(EXIT_SUCCESS));
 }

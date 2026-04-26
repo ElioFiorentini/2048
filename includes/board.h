@@ -32,7 +32,8 @@ bool	fill_start_numbers(t_board* board);
 bool	fill_nb_rd_place(t_board* board);
 bool	game_loop(t_board* board);
 
+
 // DEBUG
-bool	print_board(t_board *board);
+void print_simple_grid(t_board* board) ;
 
 #endif

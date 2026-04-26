@@ -11,21 +11,24 @@
 /* ************************************************************************** */
 
 #include "board.h"
-
 #include "libft.h"
+#include <stdio.h>
 
-bool	print_board(t_board *board)
+void print_simple_grid(t_board* board) 
 {
-	size_t y = 0;
-	size_t x = 0;
-	while (y < board->size - 1)
-	{
-		while (x < board->size - 1)
-		{
-			ft_putnbr_fd(board->grid[y][x], 1);
-			x++;
-		}
-		y++;
-	}
-	return (true);
+    for (int i = 0; i < board->size; i++)
+    {
+        printf("+---+---+---+---+\n");
+        
+        printf("|");
+        for (int j = 0; j < 4; j++)
+        {
+            if (board->grid[i][j] == 0)
+                printf("   |");
+            else
+                printf(" %d |", board->grid[i][j]);
+        }
+        printf("\n");
+    }
+    printf("+---+---+---+---+\n");
 }
