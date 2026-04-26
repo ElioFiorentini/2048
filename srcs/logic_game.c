@@ -20,19 +20,19 @@
 bool	move_left(t_board* board)
 {
 	size_t x = 0;
-	refresh();
 	size_t y = 0;
-	int old_x, old_y = 0;
-	while (y < board->size)
+	int old_x, old_y = -1;
+
+	while (y < board->size - 1)
 	{
-		while (x < board->size)
+		while (x < board->size - 1)
 		{
-			if (board->grid[x][y] == 0)
+			if (old_x == -1 && old_y == -1 && board->grid[x][y] == 0)
 			{
 				old_x = x;
 				old_y = y;
 			}
-			else
+			else if (old_x != -1 && old_y != -1)
 			{
 				board->grid[old_x][old_y] = board->grid[x][y];
 				board->grid[x][y] = 0;
@@ -41,8 +41,9 @@ bool	move_left(t_board* board)
 			}
 			x++;
 		}
-		old_x = 0;
-		old_y = 0;
+		break ;
+		old_x = -1;
+		old_y = -1;
 		y++;
 		x = 0;
 	}
@@ -68,11 +69,11 @@ bool	game_loop(t_board* board)
 			}
 			// if (fill_nb_rd_place(board) == false)
 			// 	return (clean_up_ncurses(EXIT_SUCCESS));
-			k = getch();
-        }
+			// k = getch();
+		}
 		erase();
-		display_board(board);
 		refresh();
+		display_board(board);
 	}
 	refresh();
 	erase();

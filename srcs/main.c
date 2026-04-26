@@ -48,10 +48,10 @@ int	main(void)
 
 	init_board(&board, 4);
 	load_font(&font);
-	fill_start_numbers(&board);
-	board.grid[1][1] = 2048;
-	board.grid[1][2] = 32;
-	board.grid[1][3] = 128;
+	// fill_start_numbers(&board);
+	board.grid[1][0] = 2;
+	// board.grid[1][2] = 32;
+	// board.grid[1][3] = 128;
 	if (!set_up_ncurses())
 		return (clean_up_ncurses(EXIT_FAILURE));
 	if (display_main_menu(&font) == ERR)
