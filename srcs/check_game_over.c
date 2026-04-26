@@ -11,9 +11,19 @@
 /* ************************************************************************** */
 
 #include "board.h"
+#include <stdint.h>
 
 bool	check_vertical_game_over(t_board* board);
 bool	check_horizontal_game_over(t_board* board);
+
+bool	is_victory(t_board* board)
+{
+	for (size_t i = 0; i < board->size; i++)
+		for (size_t j = 0; j < board->size; j++)
+			if (board->grid[i][j] == WIN_VALUE || board->grid[i][j] == SIZE_MAX)
+				return (true);
+	return (false);
+}
 
 bool	is_game_over(t_board* board)
 {

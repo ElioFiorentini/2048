@@ -21,7 +21,7 @@
 
 typedef struct s_board
 {
-	int		grid[5][5];
+	size_t	grid[5][5];
 	size_t	size;
 	size_t	empty_case;
 }			t_board;
@@ -47,11 +47,12 @@ void	sort_pos(int* pos);
 int		get_index(int* pos);
 void	fill_pos(int* pos, int index);
 bool	have_pos(int* pos);
-bool	reverse_line(int* line, int size);
+bool	reverse_line(size_t* line, int size);
 bool	reverse_column(t_board* board, int c);
 
 //CHECK
 bool	is_game_over(t_board* board);
+bool	is_victory(t_board* board);
 
 // DEBUG
 void print_simple_grid(t_board* board) ;

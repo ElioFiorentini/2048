@@ -144,8 +144,6 @@ static bool add_line(t_board *board, int l, bool move_right)
 			{
 				board->empty_case++;
 				board->grid[l][i - 1] *= 2;
-				if (board->grid[l][i - 1] == 2048)
-					printf("Victory !\n");
 				board->grid[l][i] = 0;
 				res = true;
 			}
@@ -162,8 +160,6 @@ static bool add_line(t_board *board, int l, bool move_right)
 			{
 				board->empty_case++;
 				board->grid[l][i] *= 2;
-				if (board->grid[l][i] == 2048)
-					printf("Victory !\n");
 				board->grid[l][i - 1] = 0;
 				res = true;
 			}
@@ -187,8 +183,6 @@ static bool add_column(t_board *board, int c, bool move_bottom)
 			{
 				board->empty_case++;
 				board->grid[i - 1][c] *= 2;
-				if (board->grid[i - 1][c] == WIN_VALUE)
-					printf("Victory !\n");
 				board->grid[i][c] = 0;
 				res = true;
 			}
@@ -205,8 +199,6 @@ static bool add_column(t_board *board, int c, bool move_bottom)
 			{
 				board->empty_case++;
 				board->grid[i][c] *= 2;
-				if (board->grid[i][c] == 2048)
-					printf("Victory !\n");
 				board->grid[i - 1][c] = 0;
 				res = true;
 			}
@@ -250,6 +242,9 @@ int	game_loop(t_board *board, t_font *font)
 		}
 		else if (c == 'q' || c == KEY_ESCAPE)
 			return (ERR);
+		if (is_victory(board) == true)
+			if (display_end_menu(font) != 0)
+				return (ERR);
 		if (is_game_over(board) == true || c == 'e')
 			return (display_game_over(font));
 	}

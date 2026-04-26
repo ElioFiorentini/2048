@@ -14,7 +14,9 @@
 #include "display.h"
 #include "font.h"
 #include <ncurses.h>
+#include <stdint.h>
 #include <stdlib.h>
+#include <limits.h>
 
 bool	set_up_ncurses(void)
 {

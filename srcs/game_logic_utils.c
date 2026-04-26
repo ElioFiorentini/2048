@@ -15,7 +15,7 @@
 bool	reverse_column(t_board *board, int c)
 {
 	size_t i = 0;
-	while (i < board->size / 2) 
+	while (i < board->size / 2)
 	{
 		int temp = board->grid[i][c];
 		board->grid[i][c] = board->grid[board->size - i - 1][c];
@@ -25,7 +25,7 @@ bool	reverse_column(t_board *board, int c)
 	return (true);
 }
 
-bool	reverse_line(int* line, int size)
+bool	reverse_line(size_t* line, int size)
 {
 	int i = 0;
 	while (i < size / 2) 

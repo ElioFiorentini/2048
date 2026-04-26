@@ -26,7 +26,7 @@ void print_simple_grid(t_board* board)
             if (board->grid[i][j] == 0)
                 printf("   |");
             else
-                printf(" %d |", board->grid[i][j]);
+                printf(" %zu |", board->grid[i][j]);
         }
         printf("\n");
     }
