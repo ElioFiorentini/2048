@@ -18,6 +18,18 @@
 #include <stddef.h>
 
 #define INIT_COLORS(color) init_pair(color, COLOR_WHITE, color);
+#define INVERSE_COLORS(print) \
+	do {\
+		attron(A_REVERSE);\
+		(print);\
+		attroff(A_REVERSE);\
+	} while (0)
+#define COLOR(color, print) \
+	do {\
+		attron(COLOR_PAIR(color));\
+		(print);\
+		attroff(COLOR_PAIR(color));\
+	} while (0)
 
 void	init_all_color_pair()
 {
@@ -70,11 +82,7 @@ static void	display_cell_number(int nb, int x, int y, int size)
 	if (COLS < 100)
 		mvprintw(y_pos, x + CELL_SIZE - (len + 1) / 2, "%d", nb);
 	else
-	{
-		attron(COLOR_PAIR(COLOR_YELLOW));
-		print_number(x_pos, y_pos, nb, size);
-		attroff(COLOR_PAIR(BOARD_WALL_COLOR));
-	}
+		COLOR(COLOR_YELLOW, print_number(x_pos, y_pos, nb, size));
 }
 
 void	display_board(t_board *board)
@@ -84,32 +92,52 @@ void	display_board(t_board *board)
 	const size_t	CELL_HEIGHT = CELL_SIZE - CELL_WALL_SIZE;
 	int	x = COLS / 2 - (CELL_WIDTH * board->size) / 2;
 	int	y = LINES / 2 - (CELL_HEIGHT * board->size) / 2;
-	for (size_t j = 0; j < board->size; j++)
-		for (size_t i = 0; i < board->size; i++)
+	for (size_t i = 0; i < board->size; i++)
+		for (size_t j = 0; j < board->size; j++)
 			display_cell_border(x + i * CELL_WIDTH, y + j * CELL_HEIGHT);
-	for (size_t j = 0; j < board->size; j++)
-		for (size_t i = 0; i < board->size; i++)
+	for (size_t i = 0; i < board->size; i++)
+		for (size_t j = 0; j < board->size; j++)
 		{
 			int size = (board->grid[i][j] >= 1000)? 1: 2;
-			display_cell_number(board->grid[i][j], x + i * CELL_WIDTH, y + j * CELL_HEIGHT, size);
+			display_cell_number(board->grid[i][j], x + j * CELL_WIDTH, y + i * CELL_HEIGHT, size);
 		}
 }
 
 int	display_main_menu(t_font *font)
 {
-	erase();
-	int	x = COLS / 2 - ft_strlen("2048") * FONT_WIDTH;
-	int	y = LINES / 4;
-	attron(COLOR_PAIR(COLOR_YELLOW));
-	print(font, x, y, "2048");
-	attroff(COLOR_PAIR(COLOR_YELLOW));
-	char *s = "Press any key to continue...";
-	x = COLS / 2 - ft_strlen(s) / 2;
-	y = LINES - y;
-	mvprintw(y, x, "%s", s);
-	refresh();
-	int k = getch();
-	if (k == 'q' || k == KEY_ESCAPE)
-		return (ERR);
-	return (OK);
+	char *logo_str = "2048";
+	int xlogo = COLS / 2 - ft_strlen(logo_str) * FONT_WIDTH;
+	int ylogo = LINES / 4;
+
+	char *s1 = "4x4 board";
+	int x1 = COLS / 2 - ft_strlen(s1) / 2;
+	int y1 = LINES - LINES / 3;
+
+	char *s2 = "5x5 board";
+	int x2 = COLS / 2 - ft_strlen(s2) / 2;
+	int y2 = y1 + 2;
+
+	int selected_choice = 4;
+	while (true)
+	{
+		erase();
+		COLOR(COLOR_YELLOW, print(font, xlogo, ylogo, logo_str));
+		if (selected_choice == 4)
+			INVERSE_COLORS(mvprintw(y1, x1, "%s", s1));
+		else
+			mvprintw(y1, x1, "%s", s1);
+		if (selected_choice == 5)
+			INVERSE_COLORS(mvprintw(y2, x2, "%s", s2));
+		else
+			mvprintw(y2, x2, "%s", s2);
+		refresh();
+		int k = getch();
+		if (k == 'q' || k == KEY_ESCAPE)
+			return (ERR);
+		if (k == KEY_UP || k == KEY_DOWN)
+			selected_choice = (selected_choice + 1) % 2 + 4;
+		if (k == '\n' || k == ' ')
+			return (selected_choice);
+	}
+	return (ERR);
 }
