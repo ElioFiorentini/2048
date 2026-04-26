@@ -17,6 +17,7 @@
 
 void	*ft_memset(void *pointer, int value, size_t count);
 size_t	ft_strlen(const char *str);
+size_t	nbrlen(long long nb);
 size_t	max(size_t size1, size_t size2);
 
 #endif

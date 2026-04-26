@@ -82,7 +82,7 @@ static void	display_cell_number(int nb, int x, int y, const size_t CELL_WIDTH, c
 void	display_board(t_board *board)
 {
 	const size_t	H_PADDING = COLS * 0.3;
-	const size_t	V_PADDING = LINES * 0.10;
+	const size_t	V_PADDING = LINES * 0.1;
 	const size_t	CELL_WIDTH = max((COLS - H_PADDING) / board->size + 1, MIN_CELL_WIDTH);
 	const size_t	CELL_HEIGHT = max((LINES - V_PADDING) / board->size + 1, MIN_CELL_HEIGHT);
 	int	y = V_PADDING / 2;
@@ -107,29 +107,44 @@ static void	display_menu_choice(bool invert, int x, int y, char *s)
 		mvprintw(y, x, "%s", s);
 }
 
+static void	display_logo(t_font *font, const int LOGO_WIDTH, char *logo_str)
+{
+	int xlogo = COLS / 2 - LOGO_WIDTH;
+	int ylogo = LINES / 4;
+	if (LOGO_WIDTH * 2 < COLS)
+		COLOR(COLOR_YELLOW, print(font, xlogo, ylogo, logo_str, 2));
+	else if (LOGO_WIDTH < COLS)
+	{
+		xlogo = COLS / 2 - LOGO_WIDTH / 2;
+		COLOR(COLOR_YELLOW, print(font, xlogo, ylogo, logo_str, 1));
+	}
+	else
+	{
+		xlogo = COLS / 2 - ft_strlen(logo_str) / 2;
+		ylogo = LINES / 2;
+		mvprintw(ylogo, xlogo, "%s", logo_str);
+	}
+}
+
 int	display_main_menu(t_font *font)
 {
-	char *logo_str = "2048";
-	int xlogo = COLS / 2 - ft_strlen(logo_str) * FONT_WIDTH;
-	int ylogo = LINES / 4;
-
-	char *s1 = " 4x4 board ";
-	int x1 = COLS / 2 - ft_strlen(s1) / 2;
-	int y1 = LINES - LINES / 3;
-
-	char *s2 = " 5x5 board ";
-	int x2 = COLS / 2 - ft_strlen(s2) / 2;
-	int y2 = y1 + 2;
-
-	char *s3 = " exit ";
-	int x3 = COLS / 2 - ft_strlen(s3) / 2;
-	int y3 = y2 + 2;
+	char		*logo_str = "2048";
+	char		*s1 = " 4x4 board ";
+	char		*s2 = " 5x5 board ";
+	char		*s3 = " Quit ";
+	const int	LOGO_WIDTH = ft_strlen(logo_str) * FONT_WIDTH;
 
 	int selected_choice = 4;
 	while (true)
 	{
+		int x1 = COLS / 2 - ft_strlen(s1) / 2;
+		int y1 = LINES - LINES / 3;
+		int x2 = COLS / 2 - ft_strlen(s2) / 2;
+		int y2 = y1 + 2;
+		int x3 = COLS / 2 - ft_strlen(s3) / 2;
+		int y3 = y2 + 2;
 		erase();
-		COLOR(COLOR_YELLOW, print(font, xlogo, ylogo, logo_str));
+		display_logo(font, LOGO_WIDTH, logo_str);
 		display_menu_choice(selected_choice == 4, x1, y1, s1);
 		display_menu_choice(selected_choice == 5, x2, y2, s2);
 		display_menu_choice(selected_choice == 6, x3, y3, s3);
@@ -150,23 +165,20 @@ int	display_main_menu(t_font *font)
 
 int	display_end_menu(t_font *font)
 {
-	char *logo_str = "Victory !!!";
-	int xlogo = COLS / 2 - ft_strlen(logo_str) * FONT_WIDTH;
-	int ylogo = LINES / 4;
-
-	char *s1 = " Continue to play ";
-	int x1 = COLS / 2 - ft_strlen(s1) / 2;
-	int y1 = LINES - LINES / 3;
-
-	char *s2 = " Quit ";
-	int x2 = COLS / 2 - ft_strlen(s2) / 2;
-	int y2 = y1 + 2;
+	char		*logo_str = "Victory";
+	char		*s1 = " Continue to play ";
+	char		*s2 = " Quit ";
+	const int	LOGO_WIDTH = ft_strlen(logo_str) * FONT_WIDTH;
 
 	int selected_choice = 0;
 	while (true)
 	{
+		int x1 = COLS / 2 - ft_strlen(s1) / 2;
+		int y1 = LINES - LINES / 3;
+		int x2 = COLS / 2 - ft_strlen(s2) / 2;
+		int y2 = y1 + 2;
 		erase();
-		COLOR(COLOR_YELLOW, print(font, xlogo, ylogo, logo_str));
+		display_logo(font, LOGO_WIDTH, logo_str);
 		display_menu_choice(selected_choice == 0, x1, y1, s1);
 		display_menu_choice(selected_choice == 1, x2, y2, s2);
 		refresh();
@@ -184,23 +196,20 @@ int	display_end_menu(t_font *font)
 
 int	display_game_over(t_font *font)
 {
-	char *logo_str = "Game Over...";
-	int xlogo = COLS / 2 - ft_strlen(logo_str) * FONT_WIDTH;
-	int ylogo = LINES / 4;
-
-	char *s1 = " Play again ";
-	int x1 = COLS / 2 - ft_strlen(s1) / 2;
-	int y1 = LINES - LINES / 3;
-
-	char *s2 = " Quit ";
-	int x2 = COLS / 2 - ft_strlen(s2) / 2;
-	int y2 = y1 + 2;
+	char		*logo_str = "Game Over";
+	char		*s1 = " Play again ";
+	char		*s2 = " Quit ";
+	const int	LOGO_WIDTH = ft_strlen(logo_str) * FONT_WIDTH;
 
 	int selected_choice = OK;
 	while (true)
 	{
+		int x1 = COLS / 2 - ft_strlen(s1) / 2;
+		int y1 = LINES - LINES / 3;
+		int x2 = COLS / 2 - ft_strlen(s2) / 2;
+		int y2 = y1 + 2;
 		erase();
-		COLOR(COLOR_YELLOW, print(font, xlogo, ylogo, logo_str));
+		display_logo(font, LOGO_WIDTH, logo_str);
 		display_menu_choice(selected_choice == OK, x1, y1, s1);
 		display_menu_choice(selected_choice == ERR, x2, y2, s2);
 		refresh();

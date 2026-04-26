@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "utils.h"
+#include <stddef.h>
 
 void	*ft_memset(void *pointer, int value, size_t count)
 {
@@ -30,6 +31,16 @@ size_t	ft_strlen(const char *str)
 	while (str[i])
 		i++;
 	return (i);
+}
+
+size_t	nbrlen(long long nb)
+{
+	if (nb == 0)
+		return 1;
+	size_t len = 0;
+	for (int tmp_nb = nb; tmp_nb != 0; tmp_nb /= 10)
+		len++;
+	return (len);
 }
 
 size_t	max(size_t size1, size_t size2)

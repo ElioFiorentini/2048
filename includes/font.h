@@ -21,9 +21,8 @@ typedef struct s_font
 }			t_font;
 
 void		load_font(t_font *font);
-void		print_char(t_font *font, int x, int y, int c);
-void		print(t_font *font, int x, int y, char *str);
+void		print_char(t_font *font, int x, int y, int c, int size);
+void		print(t_font *font, int x, int y, char *str, int size);
 void		print_number(int x, int y, int nb, int size);
-long long	nbrlen(long long nb);
 
 #endif

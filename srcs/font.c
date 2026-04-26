@@ -11,7 +11,8 @@
 /* ************************************************************************** */
 
 #include "font.h"
-#include "ncurses.h"
+#include "utils.h"
+#include <ncurses.h>
 
 void	load_font(t_font *font)
 {
@@ -50,12 +51,14 @@ void	load_font(t_font *font)
 	}
 }
 
-void	print_char(t_font *font, int x, int y, int c)
+void	print_char(t_font *font, int x, int y, int c, int size)
 {
-	const int WIDTH = FONT_WIDTH * 2;
+	if (size <= 0)
+		return ;
+	const int WIDTH = FONT_WIDTH * size;
 	for (int i = 0; i < FONT_HEIGHT; i++)
 		for (int j = 0; j < WIDTH; j++)
-			if (font->chars[c][i][j / 2] == '#')
+			if (font->chars[c][i][j / size] == '#')
 				mvaddch(y + i, x + j, ' ');
 }
 
@@ -145,30 +148,20 @@ void	print_number(int x, int y, int nb, int size)
 			"###",
 		},
 	};
-	int len = nbrlen(nb) - 1;
+	size_t len = nbrlen(nb) - 1;
 	int offset = (3 * size * len + len) / 2 - size;
 	print_digits(digits, x + offset, y - 2, nb, size);
 }
 
-void	print(t_font *font, int x, int y, char *str)
+void	print(t_font *font, int x, int y, char *str, int size)
 {
 	if (!str)
 		return ;
-	const int STEP = FONT_WIDTH * 2;
+	const int STEP = FONT_WIDTH * size;
 	int	offset = 0;
 	for (size_t i = 0; str[i] != '\0'; i++)
 	{
-		print_char(font, x + offset, y, str[i]);
+		print_char(font, x + offset, y, str[i], size);
 		offset += STEP;
 	}
-}
-
-long long	nbrlen(long long nb)
-{
-	if (nb == 0)
-		return 1;
-	int len = 0;
-	for (int tmp_nb = nb; tmp_nb != 0; tmp_nb /= 10)
-		len++;
-	return (len);
 }

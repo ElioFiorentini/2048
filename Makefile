@@ -3,8 +3,8 @@ BUILD_DIR		:= .build
 SRC_DIR			:= srcs
 INCLUDE_DIR		:= includes
 CC				:= cc
-CFLAGS			:= -Wall -Wextra -Werror -g3
-CPPFLAGS		:= -MMD -MP -I $(INCLUDE_DIR) 
+CFLAGS			:= -Wall -Wextra -Werror
+CPPFLAGS		:= -MMD -MP -I $(INCLUDE_DIR)
 
 SRCS			:= 		\
 	main.c				\
