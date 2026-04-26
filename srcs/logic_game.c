@@ -12,7 +12,7 @@
 
 #include "board.h"
 #include "display.h"
-#include "libft.h"
+#include "utils.h"
 
 #include <stdbool.h>
 #include <stdlib.h>

@@ -1,16 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lud-adam <lud-adam <marvin@42.fr> >        +#+  +:+       +#+        */
+/*   By: efiorent <efiorent@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/05 08:54:45 by lud-adam          #+#    #+#             */
-/*   Updated: 2024/11/18 11:03:58 by lud-adam         ###   ########.fr       */
+/*   Created: 2026/04/26 18:17:02 by efiorent          #+#    #+#             */
+/*   Updated: 2026/04/26 18:19:35 by efiorent         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
+#include "utils.h"
+
+void	*ft_memset(void *pointer, int value, size_t count)
+{
+	unsigned char	*p;
+
+	p = (unsigned char *)pointer;
+	while (count--)
+		*p++ = value;
+	return (pointer);
+}
 
 size_t	ft_strlen(const char *str)
 {
@@ -20,4 +30,11 @@ size_t	ft_strlen(const char *str)
 	while (str[i])
 		i++;
 	return (i);
+}
+
+size_t	max(size_t size1, size_t size2)
+{
+	if (size1 > size2)
+		return (size1);
+	return (size2);
 }

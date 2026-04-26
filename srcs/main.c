@@ -25,7 +25,6 @@ bool	set_up_ncurses(void)
 	curs_set(0);
 	noecho();
 	keypad(stdscr, TRUE);
-	//nodelay(stdscr, TRUE);
 	if (has_colors() == FALSE)
 		return (false);
 	start_color();
@@ -40,7 +39,6 @@ int	clean_up_ncurses(int status)
 	curs_set(1);
 	echo();
 	keypad(stdscr, FALSE);
-	//nodelay(stdscr, FALSE);
 	endwin();
 	return (status);
 }

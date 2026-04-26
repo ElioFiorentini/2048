@@ -6,14 +6,14 @@
 /*   By: efiorent <efiorent@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 12:55:03 by efiorent          #+#    #+#             */
-/*   Updated: 2026/04/25 14:29:58 by efiorent         ###   ########lyon.fr   */
+/*   Updated: 2026/04/26 18:19:44 by efiorent         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "board.h"
 #include "display.h"
 #include "font.h"
-#include "libft.h"
+#include "utils.h"
 #include <ncurses.h>
 #include <stddef.h>
 
@@ -77,13 +77,6 @@ static void	display_cell_number(int nb, int x, int y, const size_t CELL_WIDTH, c
 		mvprintw(y_pos, x_pos - len / 2, "%d", nb);
 	else
 		COLOR(COLOR_YELLOW, print_number(x_pos, y_pos, nb, text_size));
-}
-
-static size_t	max(size_t size1, size_t size2)
-{
-	if (size1 > size2)
-		return (size1);
-	return (size2);
 }
 
 void	display_board(t_board *board)

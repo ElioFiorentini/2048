@@ -89,7 +89,6 @@ static int	gen_two_or_four()
 static int gen_number(int min_nb, int max_nb, int modulo)
 {
 	int res = 0;
-	// int res = rand() % max_nb;
 	while (1)
 	{
 		res = rand() % (max_nb + 1 - min_nb) + min_nb;

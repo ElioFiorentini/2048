@@ -1,18 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lud-adam <lud-adam <marvin@42.fr> >        +#+  +:+       +#+        */
+/*   By: efiorent <efiorent@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/04 14:04:34 by lud-adam          #+#    #+#             */
-/*   Updated: 2024/11/06 15:00:46 by lud-adam         ###   ########lyon.fr   */
+/*   Created: 2026/04/26 18:17:42 by efiorent          #+#    #+#             */
+/*   Updated: 2026/04/26 18:19:29 by efiorent         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isalpha(int c)
-{
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-		return (1);
-	return (0);
-}
+
+#ifndef UTILS_H
+# define UTILS_H
+# include <stddef.h>
+
+void	*ft_memset(void *pointer, int value, size_t count);
+size_t	ft_strlen(const char *str);
+size_t	max(size_t size1, size_t size2);
+
+#endif
