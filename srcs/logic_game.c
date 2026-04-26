@@ -6,68 +6,24 @@
 /*   By: lud-adam <lud-adam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 17:18:51 by lud-adam          #+#    #+#             */
-/*   Updated: 2026/04/25 17:42:43 by lud-adam         ###   ########.fr       */
+/*   Updated: 2026/04/26 16:17:34 by lud-adam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "board.h"
-#include "display.h"
+#include "libft.h"
 
 #include <stdbool.h>
 #include <stdlib.h>
 #include <ncurses.h>
 
-static void	fill_pos(int *pos, int index);
-static int	get_index(int* pos);
-static void sort_pos(int* pos);
-static bool	have_pos(int *pos);
-static void	reset_pos(int* pos);
-static bool add_line(t_board *board, int l);
-static bool add_column(t_board *board, int c);
-static bool	reverse_line(int* line, int size);
-static bool	reverse_column(t_board *board, int c);
 static bool	tighten_side_grid(t_board* board, bool move_right);
-static bool	tighten_verticality_grid(t_board* board, bool move_bottom);
-
-bool	check_horizontal_game_over(t_board *board)
-{
-	for (size_t i = 0; i < board->size; i++)
-	{
-		for (size_t j = 0; j < board->size; j++)
-		{
-			if (board->grid[i][j] == board->grid[i][j + 1])
-				return (false);
-		}
-	}
-	return (true);
-}
-
-bool	check_vertical_game_over(t_board *board)
-{
-	for (size_t i = 0; i < board->size; i++)
-	{
-		for (size_t j = 0; j < board->size; j++)
-		{
-			if (board->grid[i][j] == board->grid[i + 1][j])
-				return (false);
-		}
-	}
-	return (true);
-}
-
-bool	is_game_over(t_board *board)
-{
-	if (board->empty_case == 0)
-	{
-		if (check_horizontal_game_over(board) == true && check_vertical_game_over(board) == true)
-			return (true);
-	}
-	return (false);
-}
+static bool add_line(t_board *board, int l);
 
 bool	move_side(t_board* board, bool move_right)
 {
 	bool	res = false;
+
 	res = tighten_side_grid(board, move_right);
 	for (size_t i  = 0; i < board->size; i++)
 	{
@@ -84,13 +40,11 @@ bool	move_side(t_board* board, bool move_right)
 static bool	tighten_side_grid(t_board* board, bool move_right)
 {
 	bool		res = false;
-	int pos[3];
-	pos[0] = -1;
-	pos[1] = -1;
-	pos[2] = -1;
-	size_t x = 0;
-	size_t y = 0;
+	int			pos[board->size];
+	size_t		x = 0;
+	size_t		y = 0;
 
+	ft_memset(pos, -1, sizeof(int) * board->size);
 	while (y < board->size)
 	{
 		if (move_right == true)
@@ -118,9 +72,13 @@ static bool	tighten_side_grid(t_board* board, bool move_right)
 	return (res);
 }
 
+static bool	tighten_verticality_grid(t_board* board, bool move_bottom);
+static bool add_column(t_board *board, int c);
+
 bool	move_verticality(t_board* board, bool move_bottom)
 {
 	bool	res = false;
+
 	res = tighten_verticality_grid(board, move_bottom);
 	for (size_t i  = 0; i < board->size; i++)
 	{
@@ -138,13 +96,11 @@ bool	move_verticality(t_board* board, bool move_bottom)
 static bool	tighten_verticality_grid(t_board* board, bool move_bottom)
 {
 	bool		res = false;
-	int pos[3];
-	pos[0] = -1;
-	pos[1] = -1;
-	pos[2] = -1;
-	size_t x = 0;
-	size_t y = 0;
+	int			pos[board->size];
+	size_t		x = 0;
+	size_t		y = 0;
 
+	ft_memset(pos, -1, sizeof(int) * board->size);
 	while (x < board->size)
 	{
 		if (move_bottom == true)
@@ -171,73 +127,6 @@ static bool	tighten_verticality_grid(t_board* board, bool move_bottom)
 	}
 	return (res);
 	
-}
-
-static void	fill_pos(int* pos, int index)
-{
-	for (int i = 0; i < 3; i++)
-	{
-		if (pos[i] == -1)
-		{
-			pos[i] = index;
-			sort_pos(pos);
-			break ;
-		}
-	}
-}
-
-static int get_index(int* pos)
-{
-	for (int i = 0; i < 3; i++)
-	{
-		if (pos[i] != -1)
-		{
-			int index = pos[i];
-			pos[i] = -1;
-			return (index);
-		}
-	}
-	return (0);
-}
-
-static void sort_pos(int* pos)
-{
-	int i = 1;
-
-	while (i < 3)
-	{
-		if (pos[i - 1] > pos[i])
-		{
-			int temp = pos[i];
-			pos[i] = pos[i - 1];
-			pos[i - 1] = temp;
-		}
-		i++;
-	}
-}
-
-static bool	have_pos(int *pos)
-{
-	int i = 0;
-
-	while (i < 3)
-	{
-		if (pos[i] != -1)
-			return (true);
-		i++;
-	}
-	return (false);
-}
-
-static void	reset_pos(int* pos)
-{
-	int i = 0;
-
-	while (i < 3)
-	{
-		pos[i] = -1;
-		i++;
-	}
 }
 
 static bool add_line(t_board *board, int l)
@@ -282,63 +171,6 @@ static bool add_column(t_board *board, int c)
 	return (res);
 }
 
-static bool	reverse_column(t_board *board, int c)
-{
-	size_t i = 0;
-	while (i < board->size / 2) 
-	{
-		int temp = board->grid[i][c];
-		board->grid[i][c] = board->grid[board->size - i - 1][c];
-		board->grid[board->size - i - 1][c] = temp;
-		i++;
-	}
-	return (true);
-}
-
-static bool	reverse_line(int* line, int size)
-{
-	int i = 0;
-	while (i < size / 2) 
-	{
-		int temp = line[i];
-		line[i] = line[size - i - 1];
-		line[size - i - 1] = temp;
-		i++;
-	}
-	return (true);
-}
-
-// bool	game_loop(t_board* board)
-// {
-// 	bool	running = true;
-// 	erase();
-// 	display_board(board);
-// 	while (running)
-// 	{
-// 		int k = getch();
-// 		while (k != ERR)
-// 		{
-// 			if (k == KEY_LEFT)
-// 				move_left(board);
-// 			if (k == 'q' || k == KEY_ESCAPE)
-// 			{
-// 				running = false;
-// 				break;
-// 			}
-// 			// if (fill_nb_rd_place(board) == false)
-// 			// 	return (clean_up_ncurses(EXIT_SUCCESS));
-// 			k = getch();
-// 		}
-// 		// erase();
-// 		// refresh();
-// 		// display_board(board);
-// 		print_simple_grid(board->grid);
-// 	}
-// 	// refresh();
-// 	// erase();
-// 	return (false);
-// }
-
 bool	game_loop(t_board *board)
 {
 	int		c;
@@ -348,7 +180,6 @@ bool	game_loop(t_board *board)
 	while (running)
 	{
 		print_simple_grid(board);
-		printf("after print grid\n");
 		printf("Commande (a=left, d=right, w=up, s=down, q=quit) : ");
 		c = getchar();
 
@@ -375,15 +206,14 @@ bool	game_loop(t_board *board)
 		}
 		else if (c == 'q')
 			running = false;
-			// return (clean_up_ncurses(EXIT_SUCCESS));
 		if (is_game_over(board) == true)
 		{
+			print_simple_grid(board);
 			printf("Game over\n");
 			return (false);
 		}
 		while (c != '\n' && c != EOF)
 			c = getchar();
-
 		printf("\n");
 	}
 	return (false);

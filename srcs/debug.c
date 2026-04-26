@@ -16,12 +16,12 @@
 
 void print_simple_grid(t_board* board) 
 {
-    for (int i = 0; i < board->size; i++)
+    for (size_t i = 0; i < board->size; i++)
     {
         printf("+---+---+---+---+\n");
         
         printf("|");
-        for (int j = 0; j < 4; j++)
+        for (size_t j = 0; j < board->size; j++)
         {
             if (board->grid[i][j] == 0)
                 printf("   |");

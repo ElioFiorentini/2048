@@ -6,7 +6,7 @@
 /*   By: lud-adam <lud-adam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 13:51:51 by lud-adam          #+#    #+#             */
-/*   Updated: 2026/04/25 17:55:41 by lud-adam         ###   ########.fr       */
+/*   Updated: 2026/04/26 16:21:12 by lud-adam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@ bool	fill_nb_rd_place(t_board* board)
 {
 	if (board->empty_case == 0)
 		return (false);
-	printf("board->empty case : %zu\n", board->empty_case);
+
 	int rd_nb = gen_number(1, board->empty_case , 1);
-	printf("rd_nb : %d\n", rd_nb);
 	int nb = gen_two_or_four();
 	size_t x = 0;
 	size_t y = 0;
+
 	while (y < board->size && rd_nb != 0)
 	{
 		while (x < board->size && rd_nb != 0)

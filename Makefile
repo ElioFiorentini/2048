@@ -15,7 +15,10 @@ SRCS			:= 		\
 	logic_game.c		\
 	fill_grid_numbers.c \
 	display.c			\
+	check_game_over.c	\
+	game_logic_utils.c	\
 	font.c
+
 SRCS			:= $(SRCS:%=$(SRC_DIR)/%)
 OBJS			:= $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 DEPS			:= $(OBJS:.o=.d)

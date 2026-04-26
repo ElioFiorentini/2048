@@ -6,7 +6,7 @@
 /*   By: efiorent <efiorent@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 12:05:40 by efiorent          #+#    #+#             */
-/*   Updated: 2026/04/25 17:56:22 by lud-adam         ###   ########.fr       */
+/*   Updated: 2026/04/26 16:20:35 by lud-adam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,9 @@ int	clean_up_ncurses(int status)
 int	main(void)
 {
 	t_board	board;
-	t_font	font;
 
-	init_board(&board, 4);
-	// load_font(&font);
+	init_board(&board, 5);
 	fill_start_numbers(&board);
-	printf("empty_case : %d\n", (int)board.empty_case);
-	// board.grid[1][2] = 32;
-	// board.grid[1][3] = 128;
-	// if (!set_up_ncurses())
-	// 	return (clean_up_ncurses(EXIT_FAILURE));
-	// if (display_main_menu(&font) == ERR)
-	// 	return (clean_up_ncurses(EXIT_SUCCESS));
 	game_loop(&board);
 	return (clean_up_ncurses(EXIT_SUCCESS));
 }

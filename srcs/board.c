@@ -23,5 +23,4 @@ void	init_board(t_board *board, size_t size)
 		for (size_t j = 0; j < size; j++)
 			board->grid[i][j] = 0;
 	board->empty_case = size * size;
-	printf("empty_case : %d", (int)board->empty_case);
 }
