@@ -57,10 +57,6 @@ int	main(void)
 		return (clean_up_ncurses(EXIT_SUCCESS));
 	init_board(&board, selected_choice);
 	fill_start_numbers(&board);
-	// board.grid[1][0] = 2;
-	// board.grid[1][1] = 32;
-	// board.grid[1][2] = 128;
-	// board.grid[1][3] = 2048;
 	game_loop(&board);
 	return (clean_up_ncurses(EXIT_SUCCESS));
 }

@@ -19,7 +19,7 @@
 #include <ncurses.h>
 
 static bool	tighten_side_grid(t_board* board, bool move_right);
-static bool add_line(t_board *board, int l);
+static bool add_line(t_board *board, int l, bool move_right);
 
 bool	move_side(t_board* board, bool move_right)
 {
@@ -28,7 +28,7 @@ bool	move_side(t_board* board, bool move_right)
 	res = tighten_side_grid(board, move_right);
 	for (size_t i  = 0; i < board->size; i++)
 	{
-		if (add_line(board, i) == true)
+		if (add_line(board, i, move_right) == true)
 			res = true;
 	}
 	if (res == true)
@@ -74,7 +74,7 @@ static bool	tighten_side_grid(t_board* board, bool move_right)
 }
 
 static bool	tighten_verticality_grid(t_board* board, bool move_bottom);
-static bool add_column(t_board *board, int c);
+static bool add_column(t_board *board, int c, bool move_bottom);
 
 bool	move_verticality(t_board* board, bool move_bottom)
 {
@@ -83,7 +83,7 @@ bool	move_verticality(t_board* board, bool move_bottom)
 	res = tighten_verticality_grid(board, move_bottom);
 	for (size_t i  = 0; i < board->size; i++)
 	{
-		if (add_column(board, i) == true)
+		if (add_column(board, i, move_bottom) == true)
 			res = true;
 	}
 	if (res == true)
@@ -130,44 +130,88 @@ static bool	tighten_verticality_grid(t_board* board, bool move_bottom)
 	
 }
 
-static bool add_line(t_board *board, int l)
+static bool add_line(t_board *board, int l, bool move_right)
 {
-	size_t i = 1;	
 	bool	res = false;
 
-	while (i < board->size)
+	if (move_right == false)
 	{
-		if (board->grid[l][i] != 0 && board->grid[l][i] == board->grid[l][i - 1])
+		size_t i = 1;	
+
+		while (i < board->size)
 		{
-			board->empty_case++;
-			board->grid[l][i - 1] *= 2;
-			if (board->grid[l][i - 1] == 2048)
-				printf("Victory !\n");
-			board->grid[l][i] = 0;
-			res = true;
+			if (board->grid[l][i] != 0 && board->grid[l][i] == board->grid[l][i - 1])
+			{
+				board->empty_case++;
+				board->grid[l][i - 1] *= 2;
+				if (board->grid[l][i - 1] == 2048)
+					printf("Victory !\n");
+				board->grid[l][i] = 0;
+				res = true;
+			}
+			i++;
 		}
-		i++;
+	}
+	else
+	{
+		size_t i = board->size - 1;	
+
+		while (i > 0)
+		{
+			if (board->grid[l][i] != 0 && board->grid[l][i] == board->grid[l][i - 1])
+			{
+				board->empty_case++;
+				board->grid[l][i] *= 2;
+				if (board->grid[l][i] == 2048)
+					printf("Victory !\n");
+				board->grid[l][i - 1] = 0;
+				res = true;
+			}
+			i--;
+		}
 	}
 	return (res);
 }
 
-static bool add_column(t_board *board, int c)
+static bool add_column(t_board *board, int c, bool move_bottom)
 {
-	size_t i = 1;	
 	bool	res = false;
 
-	while (i < board->size)
+	if (move_bottom == false)
 	{
-		if (board->grid[i][c] != 0 && board->grid[i][c] == board->grid[i - 1][c])
+		size_t i = 1;	
+
+		while (i < board->size)
 		{
-			board->empty_case++;
-			board->grid[i - 1][c] *= 2;
-			// if (board->grid[i - 1][c] == 2048)
-				// printf("Victory !\n");
-			board->grid[i][c] = 0;
-			res = true;
+			if (board->grid[i][c] != 0 && board->grid[i][c] == board->grid[i - 1][c])
+			{
+				board->empty_case++;
+				board->grid[i - 1][c] *= 2;
+				if (board->grid[i - 1][c] == WIN_VALUE)
+					printf("Victory !\n");
+				board->grid[i][c] = 0;
+				res = true;
+			}
+			i++;
 		}
-		i++;
+	}
+	else
+	{
+		size_t i = board->size - 1;	
+
+		while (i > 0)
+		{
+			if (board->grid[i][c] != 0 && board->grid[i][c] == board->grid[i - 1][c])
+			{
+				board->empty_case++;
+				board->grid[i][c] *= 2;
+				if (board->grid[i][c] == 2048)
+					printf("Victory !\n");
+				board->grid[i - 1][c] = 0;
+				res = true;
+			}
+			i--;
+		}
 	}
 	return (res);
 }

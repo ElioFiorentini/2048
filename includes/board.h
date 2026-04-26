@@ -24,6 +24,11 @@ typedef struct s_board
 	size_t	empty_case;
 }			t_board;
 
+enum e_const
+{
+	WIN_VALUE = 2048
+};
+
 void	init_board(t_board* board, size_t size);
  
 int		clean_up_ncurses(int status);
