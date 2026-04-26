@@ -49,6 +49,7 @@ int	main(void)
 	init_board(&board, 4);
 	// load_font(&font);
 	fill_start_numbers(&board);
+	printf("empty_case : %d\n", (int)board.empty_case);
 	// board.grid[1][2] = 32;
 	// board.grid[1][3] = 128;
 	// if (!set_up_ncurses())

@@ -48,7 +48,9 @@ bool	fill_nb_rd_place(t_board* board)
 {
 	if (board->empty_case == 0)
 		return (false);
-	int rd_nb = gen_number(0, board->empty_case, 1);
+	printf("board->empty case : %zu\n", board->empty_case);
+	int rd_nb = gen_number(1, board->empty_case , 1);
+	printf("rd_nb : %d\n", rd_nb);
 	int nb = gen_two_or_four();
 	size_t x = 0;
 	size_t y = 0;
@@ -87,7 +89,7 @@ static int	gen_two_or_four()
 static int gen_number(int min_nb, int max_nb, int modulo)
 {
 	int res = 0;
-
+	// int res = rand() % max_nb;
 	while (1)
 	{
 		res = rand() % (max_nb + 1 - min_nb) + min_nb;

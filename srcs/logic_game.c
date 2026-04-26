@@ -22,13 +22,68 @@ static int	get_index(int* pos);
 static void sort_pos(int* pos);
 static bool	have_pos(int *pos);
 static void	reset_pos(int* pos);
-static bool add_line(int *line, int size);
+static bool add_line(t_board *board, int l);
 static bool add_column(t_board *board, int c);
 static bool	reverse_line(int* line, int size);
 static bool	reverse_column(t_board *board, int c);
+static bool	tighten_side_grid(t_board* board, bool move_right);
+static bool	tighten_verticality_grid(t_board* board, bool move_bottom);
+
+bool	check_horizontal_game_over(t_board *board)
+{
+	for (size_t i = 0; i < board->size; i++)
+	{
+		for (size_t j = 0; j < board->size; j++)
+		{
+			if (board->grid[i][j] == board->grid[i][j + 1])
+				return (false);
+		}
+	}
+	return (true);
+}
+
+bool	check_vertical_game_over(t_board *board)
+{
+	for (size_t i = 0; i < board->size; i++)
+	{
+		for (size_t j = 0; j < board->size; j++)
+		{
+			if (board->grid[i][j] == board->grid[i + 1][j])
+				return (false);
+		}
+	}
+	return (true);
+}
+
+bool	is_game_over(t_board *board)
+{
+	if (board->empty_case == 0)
+	{
+		if (check_horizontal_game_over(board) == true && check_vertical_game_over(board) == true)
+			return (true);
+	}
+	return (false);
+}
 
 bool	move_side(t_board* board, bool move_right)
 {
+	bool	res = false;
+	res = tighten_side_grid(board, move_right);
+	for (size_t i  = 0; i < board->size; i++)
+	{
+		if (add_line(board, i) == true)
+			res = true;
+	}
+	if (res == true)
+		tighten_side_grid(board, move_right);
+	else
+		res = tighten_side_grid(board, move_right);
+	return (res);
+}
+
+static bool	tighten_side_grid(t_board* board, bool move_right)
+{
+	bool		res = false;
 	int pos[3];
 	pos[0] = -1;
 	pos[1] = -1;
@@ -40,7 +95,6 @@ bool	move_side(t_board* board, bool move_right)
 	{
 		if (move_right == true)
 			reverse_line(board->grid[y], board->size);
-		add_line(board->grid[y], board->size);
 		while (x < board->size)
 		{
 			if (board->grid[y][x] == 0)
@@ -51,6 +105,7 @@ bool	move_side(t_board* board, bool move_right)
 				board->grid[y][old_x] = board->grid[y][x];
 				board->grid[y][x] = 0;
 				fill_pos(pos, x);
+				res = true;
 			}
 			x++;
 		}
@@ -60,11 +115,29 @@ bool	move_side(t_board* board, bool move_right)
 		reset_pos(pos);
 		x = 0;
 	}
-	return (true);
+	return (res);
 }
 
 bool	move_verticality(t_board* board, bool move_bottom)
 {
+	bool	res = false;
+	res = tighten_verticality_grid(board, move_bottom);
+	for (size_t i  = 0; i < board->size; i++)
+	{
+		if (add_column(board, i) == true)
+			res = true;
+	}
+	if (res == true)
+		tighten_verticality_grid(board, move_bottom);
+	else
+		res = tighten_verticality_grid(board, move_bottom);
+	return (res);
+	
+}
+
+static bool	tighten_verticality_grid(t_board* board, bool move_bottom)
+{
+	bool		res = false;
 	int pos[3];
 	pos[0] = -1;
 	pos[1] = -1;
@@ -76,7 +149,6 @@ bool	move_verticality(t_board* board, bool move_bottom)
 	{
 		if (move_bottom == true)
 			reverse_column(board, x);
-		add_column(board,  x);
 		while (y < board->size)
 		{
 			if (board->grid[y][x] == 0)
@@ -87,6 +159,7 @@ bool	move_verticality(t_board* board, bool move_bottom)
 				board->grid[old_y][x] = board->grid[y][x];
 				board->grid[y][x] = 0;
 				fill_pos(pos, y);
+				res = true;
 			}
 			y++;
 		}
@@ -96,7 +169,8 @@ bool	move_verticality(t_board* board, bool move_bottom)
 		reset_pos(pos);
 		y = 0;
 	}
-	return (true);
+	return (res);
+	
 }
 
 static void	fill_pos(int* pos, int index)
@@ -166,39 +240,46 @@ static void	reset_pos(int* pos)
 	}
 }
 
-static bool add_line(int *line, int size)
+static bool add_line(t_board *board, int l)
 {
-	int i = 1;	
-	while (i < size)
+	size_t i = 1;	
+	bool	res = false;
+
+	while (i < board->size)
 	{
-		if (line[i] == line[i - 1])
+		if (board->grid[l][i] != 0 && board->grid[l][i] == board->grid[l][i - 1])
 		{
-			line[i - 1] *= 2;
-			if (line[i - 1] == 2048)
+			board->empty_case++;
+			board->grid[l][i - 1] *= 2;
+			if (board->grid[l][i - 1] == 2048)
 				printf("Victory !\n");
-			line[i] = 0;
+			board->grid[l][i] = 0;
+			res = true;
 		}
 		i++;
 	}
-	return (true);
+	return (res);
 }
 
 static bool add_column(t_board *board, int c)
 {
 	size_t i = 1;	
+	bool	res = false;
 
 	while (i < board->size)
 	{
-		if (board->grid[i][c] == board->grid[i - 1][c])
+		if (board->grid[i][c] != 0 && board->grid[i][c] == board->grid[i - 1][c])
 		{
+			board->empty_case++;
 			board->grid[i - 1][c] *= 2;
 			if (board->grid[i - 1][c] == 2048)
 				printf("Victory !\n");
 			board->grid[i][c] = 0;
+			res = true;
 		}
 		i++;
 	}
-	return (true);
+	return (res);
 }
 
 static bool	reverse_column(t_board *board, int c)
@@ -272,18 +353,34 @@ bool	game_loop(t_board *board)
 		c = getchar();
 
 		if (c == 'a')
-			move_side(board, false);
+		{
+			if (move_side(board, false) == true)
+				fill_nb_rd_place(board);
+		}
 		else if (c == 'd')
-			move_side(board, true);
+		{
+			if (move_side(board, true) == true)
+				fill_nb_rd_place(board);
+
+		}
 		else if (c == 'w')
-			move_verticality(board, false);
+		{
+			if (move_verticality(board, false) == true)
+				fill_nb_rd_place(board);
+		}
 		else if (c == 's')
-			move_verticality(board, true);
+		{
+			if (move_verticality(board, true) == true)
+				fill_nb_rd_place(board);
+		}
 		else if (c == 'q')
 			running = false;
-		fill_nb_rd_place(board);
 			// return (clean_up_ncurses(EXIT_SUCCESS));
-
+		if (is_game_over(board) == true)
+		{
+			printf("Game over\n");
+			return (false);
+		}
 		while (c != '\n' && c != EOF)
 			c = getchar();
 
